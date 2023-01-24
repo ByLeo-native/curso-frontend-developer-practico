@@ -5,15 +5,15 @@ const burguerIcon = document.querySelector(".menu");
 const mobileMenu = document.querySelector(".mobile-menu");
 
 const navbarShoppingCart = document.querySelector(".navbar-shopping-cart");
-const productDetail = document.querySelector(".product-detail");
+const shoppingCardContainer = document.querySelector("#shoppingCardContainer");
 
-const slidingElements = [ desktopMenu, mobileMenu, productDetail ];
+const slidingElements = [ desktopMenu, mobileMenu, shoppingCardContainer ];
 
 const cardsContainer = document.querySelector(".cards-container");
 
 menuEmail.addEventListener("click", ()=> { toggleSlider(desktopMenu);});
 burguerIcon.addEventListener("click", ()=> { toggleSlider(mobileMenu);});
-navbarShoppingCart.addEventListener("click", ()=> { toggleSlider(productDetail);} );
+navbarShoppingCart.addEventListener("click", ()=> { toggleSlider(shoppingCardContainer);} );
 
 function closeSliders (element) {
     slidingElements.forEach( slider => {
@@ -47,20 +47,6 @@ productList.push( {
     price: 1000,
     image: "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
 });
-
-/* <!-- <div class="product-card">
-        <img src="https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-        <div class="product-info">
-          <div>
-            <p>$120,00</p>
-            <p>Bike</p>
-          </div>
-          <figure>
-            <img src="./icons/bt_add_to_cart.svg" alt="">
-          </figure>
-        </div>
-      </div> --> 
-*/
 
 function renderProducts(arr) {
     for(product of arr) {
