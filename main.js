@@ -7,13 +7,18 @@ const mobileMenu = document.querySelector(".mobile-menu");
 const navbarShoppingCart = document.querySelector(".navbar-shopping-cart");
 const shoppingCardContainer = document.querySelector("#shoppingCardContainer");
 
-const slidingElements = [ desktopMenu, mobileMenu, shoppingCardContainer ];
+const productDetailContainer = document.querySelector("#product-detail");
+const productDetailCloseIcon = document.querySelector(".product-detail-close");
+
+const slidingElements = [ desktopMenu, mobileMenu, shoppingCardContainer, productDetailContainer ];
 
 const cardsContainer = document.querySelector(".cards-container");
 
 menuEmail.addEventListener("click", ()=> { toggleSlider(desktopMenu);});
 burguerIcon.addEventListener("click", ()=> { toggleSlider(mobileMenu);});
 navbarShoppingCart.addEventListener("click", ()=> { toggleSlider(shoppingCardContainer);} );
+
+productDetailCloseIcon.addEventListener("click", closeProductDetail);
 
 function closeSliders (element) {
     slidingElements.forEach( slider => {
@@ -26,6 +31,15 @@ function closeSliders (element) {
 function toggleSlider(slider) {
     closeSliders(slider);
     slider.classList.toggle("inactive");
+}
+
+function openProductDetail() {
+    closeSliders(productDetailContainer);
+    productDetailContainer.classList.remove("inactive");
+}
+
+function closeProductDetail() {
+    productDetailContainer.classList.add("inactive");
 }
 
 const productList = [];
@@ -56,7 +70,9 @@ function renderProducts(arr) {
     
         const productImage = document.createElement("img");
         productImage.setAttribute ( "src", "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
-    
+        productImage.classList.add("product-detail-image");
+        productImage.addEventListener("click", openProductDetail);
+
         const productInfo = document.createElement("div");
         productInfo.classList.add("product-info");
     

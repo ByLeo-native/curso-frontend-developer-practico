@@ -259,6 +259,11 @@
   #product-detail .product-detail-close:hover {
     cursor: pointer;
   }
+
+  .product-card .product-detail-image {
+    cursor: pointer;
+  }
+
   #product-detail > img:nth-child(2) {
     width: 100%;
     height: 360px;
