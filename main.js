@@ -12,11 +12,12 @@ const productDetailCloseIcon = document.querySelector(".product-detail-close");
 
 const slidingElements = [ desktopMenu, mobileMenu, shoppingCardContainer, productDetailContainer ];
 
-
 const cardsContainer = document.querySelector(".cards-container");
+const order = document.querySelector(".order");
+const buttonCheckout = document.querySelector(".primary-button");
 
 menuEmail.addEventListener("click", ()=> { toggleSlider(desktopMenu);});
-burguerIcon.addEventListener("click", ()=> { toggleSlider(mobileMenu);});
+burguerIcon.addEventListener("click", ()=> { toggleSlider(mobileMenu); cardsContainer.classList.add("inactive");});
 navbarShoppingCart.addEventListener("click", ()=> { toggleSlider(shoppingCardContainer);} );
 
 productDetailCloseIcon.addEventListener("click", closeProductDetail);
@@ -34,14 +35,32 @@ function toggleSlider(slider) {
     slider.classList.toggle("inactive");
 }
 
-function openProductDetail() {
+/* Abrir Product Detail */
+
+function openProductDetail(product) {
     closeSliders(productDetailContainer);
+    updateInfoInTheProductDetail(product);
     productDetailContainer.classList.remove("inactive");
 }
 
 function closeProductDetail() {
     productDetailContainer.classList.add("inactive");
 }
+
+function updateInfoInTheProductDetail(product) {
+    const img = document.querySelector("#product-detail > img:nth-child(2)");
+    img.setAttribute("src", product.image);
+    const price = document.querySelector("#product-detail .product-info p:nth-child(1)");
+    price.innerHTML = "$ " + product.price;
+    const name = document.querySelector("#product-detail .product-info p:nth-child(2)");
+    name.innerHTML = product.name;
+    const description = document.querySelector("#product-detail .product-info p:nth-child(3)");
+    description.innerHTML = product.description;
+    const buttonAddToCart = document.querySelector(".product-info .primary-button");
+    buttonAddToCart.addEventListener("click", () => { addProductToCart(product)})
+}
+
+/* Agregar productos en la seccion principal */
 
 const productList = [];
 const productListInTheCart = [];
@@ -66,12 +85,15 @@ productList.push( {
 
 productList.push( {
     name: "fnjaknakjlf",
-    price: 0,
+    price: 10,
     image: "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
 });
 
 function renderProducts(arr) {
-    for(product of arr) {
+    /**
+     * Importancia de usar let en el for ya que por hoisting en el aniadir evento se pasaba siempre el ultimo elemento del array y afectaba al aniadir al carrito
+     */
+    for(let product of arr) {
         /* Creacion de etiquetas agregando contenido y clases */
         const productCart = document.createElement("div");
         productCart.classList.add("product-card");
@@ -79,7 +101,7 @@ function renderProducts(arr) {
         const productImage = document.createElement("img");
         productImage.setAttribute ( "src", "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
         productImage.classList.add("product-detail-image");
-        productImage.addEventListener("click", openProductDetail);
+        productImage.addEventListener("click", () => {openProductDetail(product)});
 
         const productInfo = document.createElement("div");
         productInfo.classList.add("product-info");
@@ -112,9 +134,10 @@ function renderProducts(arr) {
         productCart.appendChild(productInfo);
     
         cardsContainer.appendChild(productCart);
-        console.log(product);
     }
 }
+
+/* Aniadir producto al carrito */
 
 function addProductToCart(product) {
     console.log(product);
@@ -143,6 +166,8 @@ function removeProductToCart(product) {
         renderCart(productListInTheCart);
     }
 }
+
+/* Crea carta del carrito */
 
 function createShoppingCart(product) {
     const shoppingCard = document.createElement("div");
@@ -177,7 +202,7 @@ function createShoppingCart(product) {
 function renderCart(listInTheCart) {
     const numberOfProductsContainer = document.querySelector("#numberOfProductsInTheCart");
     numberOfProductsContainer.innerHTML = listInTheCart.length;
-    updateTotalPrice();
+    updateTotalPrice(); 
 }
 
 function updateTotalPrice() {
@@ -187,6 +212,16 @@ function updateTotalPrice() {
     }
     const totalPrice = document.querySelector("#totalPrice");
     totalPrice.innerHTML = "$ "+ total;
+}
+
+function unlockCheckout() {
+    order.classList.remove("inactive");
+    buttonCheckout.classList.remove("inactive-button");
+}
+
+function blockCheckout() {
+    order.classList.add("inactive");
+    buttonCheckout.classList.add("inactive-button");
 }
 
 renderProducts(productList);

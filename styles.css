@@ -23,6 +23,7 @@
   /* Navbar general */
   nav {
     display: flex;
+    background: var(--white);
     justify-content: space-between;
     padding: 0 24px;
     border-bottom: 1px solid var(--very-light-pink);
@@ -168,12 +169,14 @@
     background: var(--white);
     width: 360px;
     box-sizing: border-box;
+    padding: 0 0 24px 0;
     position: absolute;
     right: 0;
   }
 
   #shoppingCardContainer {
     padding: 0 24px 24px 24px;
+    border-radius: 0 0 8px 8px;
   }
 
   #shoppingCardContainer .title-container {
@@ -360,6 +363,12 @@
   }
 
   @media (max-width: 640px) {
+    nav {
+      position: sticky;
+      top: 0;
+      left: 0;
+    }
+
     .menu {
       display: block;
     }
@@ -376,8 +385,15 @@
       display: none;
     }
 
+    .mobile-menu {
+      position: sticky;
+      left: 0;
+    }
+
     #product-detail, #shoppingCardContainer {
       width: 100%;
+      position: sticky;
+      top: 61px;
     }
 
     .cards-container {
