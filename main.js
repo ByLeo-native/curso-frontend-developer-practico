@@ -1,3 +1,24 @@
+const baseURL = 'https://api.escuelajs.co/api/v1/';
+
+const get = async (url = "") => {
+    if(baseURL != "") {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', baseURL+url, true);
+        xhr.responseType = "json"
+        xhr.onload = () => {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                renderProducts(xhr.response);
+                return xhr.response;
+            } else {
+                throw new Error(xhr.status);
+            }
+        }
+        xhr.send();
+    } else {
+        throw new Error("No se ingreso una URL base");
+    }
+}
+
 const menuEmail = document.querySelector(".navbar-email");
 const desktopMenu = document.querySelector(".desktop-menu");
 
@@ -21,6 +42,9 @@ burguerIcon.addEventListener("click", ()=> { toggleSlider(mobileMenu); cardsCont
 navbarShoppingCart.addEventListener("click", ()=> { toggleSlider(shoppingCardContainer);} );
 
 productDetailCloseIcon.addEventListener("click", closeProductDetail);
+
+const closeShoppingCartIcon = document.querySelector("#shoppingCardContainer .title-container img");
+closeShoppingCartIcon.addEventListener("click", closeSliders);
 
 function closeSliders (element) {
     slidingElements.forEach( slider => {
@@ -61,33 +85,7 @@ function updateInfoInTheProductDetail(product) {
 }
 
 /* Agregar productos en la seccion principal */
-
-const productList = [];
 const productListInTheCart = [];
-
-productList.push( {
-    name: "Bike",
-    price: 120,
-    image: "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-});
-
-productList.push( {
-    name: "Mono",
-    price: 40,
-    image: "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-});
-
-productList.push( {
-    name: "Aire",
-    price: 1000,
-    image: "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-});
-
-productList.push( {
-    name: "fnjaknakjlf",
-    price: 10,
-    image: "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-});
 
 function renderProducts(arr) {
     /**
@@ -99,7 +97,8 @@ function renderProducts(arr) {
         productCart.classList.add("product-card");
     
         const productImage = document.createElement("img");
-        productImage.setAttribute ( "src", "https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+        productImage.setAttribute ( "src", product.images[0]);
+        productImage.setAttribute( "alt", "Imagen del producto");
         productImage.classList.add("product-detail-image");
         productImage.addEventListener("click", () => {openProductDetail(product)});
 
@@ -112,7 +111,7 @@ function renderProducts(arr) {
         productPrice.innerHTML = "$ "+ product.price;
     
         const productName = document.createElement("p");
-        productName.innerHTML = product.name;
+        productName.innerHTML = product.title;
     
         const productInfoFigure = document.createElement("figure");
         const productImgCart = document.createElement("img");
@@ -224,5 +223,6 @@ function blockCheckout() {
     buttonCheckout.classList.add("inactive-button");
 }
 
-renderProducts(productList);
+get('products?offset=0&limit=20').then()
+//renderProducts(productList);
 renderCart(productListInTheCart);
